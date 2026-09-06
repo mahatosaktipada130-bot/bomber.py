@@ -10,6 +10,21 @@ from telebot import types
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import hashlib
 from concurrent.futures import ThreadPoolExecutor
+from flask import Flask
+
+# ─── FLASK WEB SERVER FOR RENDER PORT BINDING ──────────────────────
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running online!"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
+
+# Background thread me Flask server start karna
+threading.Thread(target=run_flask, daemon=True).start()
 
 # ╔══════════════════════════════════════════════════════════════════╗
 # ║         𝐃𝐄𝐌𝐎𝐍 𝐒𝐌𝐒 𝐁𝐎𝐌𝐁𝐄𝐑 — 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐄𝐃𝐈𝐓𝐈𝐎𝐍            ║
@@ -216,7 +231,7 @@ def main_menu_keyboard(uid=None):
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     kb.row("🇮🇳 𝐈𝐧𝐝𝐢𝐚 𝐒𝐌𝐒 𝐁𝐨𝐦𝐛𝐞𝐫")
     kb.row("🔥 𝐔𝐧𝐥𝐢𝐦𝐢𝐭𝐞𝐝 𝐁𝐨𝐦𝐛")
-    kb.row("📊 𝐁𝐨𝐦𝐛𝐞𝐫 𝐒𝐭𝐚𝐭𝐮𝐬",  "🎁 𝐆𝐞𝐭 𝐅𝐫𝐞𝐞 𝐁𝐨𝐦𝐛𝐬")
+    kb.row("📊 𝐁𝐨𝐦𝐛𝐞𝐫 𝐒𝐭𝐚𝐭𝐬",  "🎁 𝐆𝐞𝐭 𝐅𝐫𝐞𝐞 𝐁𝐨𝐦𝐛𝐬")
     kb.row("🤖 𝐎𝐰𝐧 𝐁𝐨𝐭",        "👥 𝐑𝐞𝐟𝐞𝐫𝐫𝐚𝐥𝐬")
     kb.row("📈 𝐌𝐲 𝐒𝐭𝐚𝐭𝐬",       "📊 𝐃𝐚𝐬𝐡𝐛𝐨𝐚𝐫𝐝")
     kb.row("ℹ️ 𝐇𝐞𝐥𝐩 & 𝐆𝐮𝐢𝐝𝐞")
@@ -336,4 +351,3 @@ def process_unban_user(message):
 # ─── LAUNCH ────────────────────────────────────────────────────────
 print("🤖 BOT IS RUNNING SUCCESSFULLY...")
 bot.infinity_polling(timeout=60)
-
