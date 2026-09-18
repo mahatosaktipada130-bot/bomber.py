@@ -32,13 +32,6 @@ BOT_TOKEN       = "8938130401:AAEzEIrsax94hyrqZHebHjJQgNXFlL9vWfY"
 bot             = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
 BOT_USERNAME    = "@bomfhjbot"
 
-DEVELOPER_USERNAME = "@DarkCarder"
-FOOTER = (
-    "\n<code>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code>\n"
-    "<b>⚡ Powered by DARK CARDER </b>\n"
-    f"<b>📞 Support: {@DarkCarder05}</b>"
-)
-
 # ─── PROXY LIST (FULL 200+ PROXIES) ──────────────────────────────
 PROXY_LIST = [
     "1.0.136.129:8080", "1.0.170.50:8080", "1.1.109.141:9999",
