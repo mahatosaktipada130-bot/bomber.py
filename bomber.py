@@ -30,7 +30,16 @@ def run_flask():
 
 BOT_TOKEN       = "8938130401:AAEzEIrsax94hyrqZHebHjJQgNXFlL9vWfY"
 bot             = telebot.TeleBot(BOT_TOKEN, parse_mode="HTML")
-BOT_USERNAME    = "@bomfhjbot"
+
+BOT_USERNAME = "@bomfhjbot"
+
+DEVELOPER_USERNAME = "@DarkCarder05"
+
+FOOTER = (
+    "\n<code>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code>\n"
+    "<b>⚡ Powered by DARK CARDER</b>\n"
+    f"<b>📞 Support: {DEVELOPER_USERNAME}</b>"
+)
 
 # ─── PROXY LIST (FULL 200+ PROXIES) ──────────────────────────────
 PROXY_LIST = [
