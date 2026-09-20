@@ -1,7 +1,9 @@
 import os
-import base64
 import re
 import json
+import asyncio
+import aiohttp
+import base64
 from urllib.parse import parse_qs, urlparse
 from flask import Flask
 from threading import Thread
@@ -13,61 +15,149 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Bot is running 24/7!"
+    return "Ultra Speed Firebase Monitor is Active!"
 
 def run_flask():
     port = int(os.environ.get("PORT", 8080))
     app.run(host='0.0.0.0', port=port)
 
-# Only Firebase URLs Extract karne wala function
-def decode_custom_url(url_text: str) -> str:
-    parsed_url = urlparse(url_text)
-    query_params = parse_qs(parsed_url.query)
-    
-    if 's' in query_params:
-        encoded_str = query_params['s'][0]
-    else:
-        encoded_str = url_text.strip()
+# High Parallel Limit: Up to 100 requests concurrently
+SEMAPHORE = asyncio.Semaphore(100)
 
-    try:
-        # Base64 padding fix
-        missing_padding = len(encoded_str) % 4
-        if missing_padding:
-            encoded_str += '=' * (4 - missing_padding)
-        
-        # Decode base64
-        decoded_bytes = base64.b64decode(encoded_str)
-        decoded_str = decoded_bytes.decode('utf-8', errors='ignore')
-        
-        # Regex se sirf Firebase URLs extract karna (.firebaseio.com aur .firebasedatabase.app dono)
-        firebase_pattern = r'https://[a-zA-Z0-9\.-]+?\.(?:firebaseio\.com|firebasedatabase\.app)'
-        firebase_links = re.findall(firebase_pattern, decoded_str)
-        
-        # Unique links preserve karna
-        unique_links = list(dict.fromkeys(firebase_links))
-        
-        if not unique_links:
-            return None
+# Recursive Base64 Decoder
+def smart_base64_decode(text: str, max_rounds=3) -> str:
+    current = text.strip()
+    if "http" in current and "?" in current:
+        parsed_url = urlparse(current)
+        query_params = parse_qs(parsed_url.query)
+        for k, v in query_params.items():
+            if v and len(v[0]) > 10:
+                current = v[0]
+                break
+
+    for _ in range(max_rounds):
+        try:
+            missing_padding = len(current) % 4
+            if missing_padding:
+                current += '=' * (4 - missing_padding)
             
-        return "\n".join([f"• {link}" for link in unique_links])
-        
-    except Exception:
-        return None
+            decoded_bytes = base64.b64decode(current)
+            decoded_str = decoded_bytes.decode('utf-8', errors='ignore')
+            
+            if decoded_str and decoded_str != current:
+                current = decoded_str
+            else:
+                break
+        except Exception:
+            break
+
+    return current
+
+# Ultra-Fast Online Device Checking Function
+async def check_online_fast(session, firebase_url: str) -> dict:
+    clean_url = firebase_url.strip()
+    if not clean_url.startswith("http"):
+        clean_url = "https://" + clean_url
+    if not clean_url.endswith(".json"):
+        clean_url = clean_url.rstrip("/") + "/.json"
+
+    # Ultra Strict Timeout (1.5s total)
+    timeout = aiohttp.ClientTimeout(total=1.5, connect=0.8)
+
+    async with SEMAPHORE:
+        try:
+            async with session.get(clean_url, timeout=timeout) as response:
+                if response.status != 200:
+                    return None
+                
+                text_data = await response.text()
+                if not text_data or text_data == "null" or len(text_data) < 10:
+                    return None
+
+                # Ultra fast regex scan for online indicators before heavy parsing
+                if not re.search(r'(?i)"(status|state|presence|isonline|online)"', text_data):
+                    return None
+
+                data = json.loads(text_data)
+                online_count = 0
+
+                # Fast iterative scanner
+                nodes = [data]
+                while nodes:
+                    curr = nodes.pop()
+                    if isinstance(curr, dict):
+                        for k, v in curr.items():
+                            if k.lower() in ["status", "state", "presence", "isonline", "online"]:
+                                val_str = str(v).lower()
+                                if val_str in ["online", "true", "1", "active"]:
+                                    online_count += 1
+                                break
+                        nodes.extend(curr.values())
+                    elif isinstance(curr, list):
+                        nodes.extend(curr)
+
+                if online_count > 0:
+                    return {"url": firebase_url, "online": online_count}
+                return None
+
+        except Exception:
+            return None
 
 # Telegram Handlers
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hii! Mujhe link ya Base64 text bhejo, main usme se sirf Firebase URLs nikal ke de doonga.")
+    await update.message.reply_text(
+        "⚡ **Ultra-Fast Online Firebase Extractor**\n\n"
+        "Direct Firebase links ya Panel encoded links bhejien. "
+        "Bot seconds me filter karke sirf **ONLINE** devices wale Firebase links bheje ga."
+    )
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-    decoded_result = decode_custom_url(text)
+    text = update.message.text.strip()
     
-    if decoded_result:
-        reply_text = f"✅ **Decoded Firebase Links:**\n\n{decoded_result}"
+    # Auto Decode text
+    decoded_content = smart_base64_decode(text)
+    
+    # Extract Firebase URLs
+    firebase_pattern = r'https://[a-zA-Z0-9\.-]+?\.(?:firebaseio\.com|firebasedatabase\.app)'
+    found_urls = re.findall(firebase_pattern, decoded_content) + re.findall(firebase_pattern, text)
+    unique_urls = list(dict.fromkeys(found_urls))
+
+    if not unique_urls:
+        await update.message.reply_text("❌ Koi valid Firebase URL nahi mila.")
+        return
+
+    status_msg = await update.message.reply_text(f"⚡ **Scanning {len(unique_urls)} Firebase links at Turbo Speed...**")
+
+    # High-Performance Async Connection Pool
+    connector = aiohttp.TCPConnector(limit=200, ttl_dns_cache=300)
+    async with aiohttp.ClientSession(connector=connector) as session:
+        tasks = [check_online_fast(session, url) for url in unique_urls]
+        results = await asyncio.gather(*tasks)
+
+    # Filter only active online links
+    online_results = [res for res in results if res is not None]
+
+    if not online_results:
+        await status_msg.edit_text("❌ **Kisi bhi Firebase me Online Device nahi mila.**")
+        return
+
+    # Preparing fast output
+    response_lines = [f"🟢 **ONLINE FIREBASE LINKS FOUND ({len(online_results)}/{len(unique_urls)}):**\n"]
+    
+    for item in online_results:
+        response_lines.append(f"`{item['url']}` (Online: {item['online']})")
+
+    final_report = "\n".join(response_lines)
+
+    # Telegram limit handling (4096 chars limit)
+    if len(final_report) > 4000:
+        await status_msg.edit_text("✅ **Online Firebase Links Found:**")
+        # Split and send in multiple messages if links list is too long
+        chunks = [final_report[i:i+3900] for i in range(0, len(final_report), 3900)]
+        for chunk in chunks:
+            await update.message.reply_text(chunk, parse_mode="Markdown", disable_web_page_preview=True)
     else:
-        reply_text = "❌ Koi valid Firebase URL nahi mila."
-        
-    await update.message.reply_text(reply_text, disable_web_page_preview=True)
+        await status_msg.edit_text(final_report, parse_mode="Markdown", disable_web_page_preview=True)
 
 def main():
     token = os.environ.get("BOT_TOKEN")
@@ -81,7 +171,7 @@ def main():
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     
-    print("Bot started successfully...")
+    print("Turbo Fast Bot is running...")
     application.run_polling()
 
 if __name__ == '__main__':
