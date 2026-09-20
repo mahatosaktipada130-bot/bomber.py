@@ -1,13 +1,14 @@
 import os
 import base64
-import asyncio
+import re
+import json
 from urllib.parse import parse_qs, urlparse
 from flask import Flask
 from threading import Thread
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-# Flask Web Server (Render Port Binding ke liye)
+# Flask Web Server
 app = Flask(__name__)
 
 @app.route('/')
@@ -18,7 +19,7 @@ def run_flask():
     port = int(os.environ.get("PORT", 8080))
     app.run(host='0.0.0.0', port=port)
 
-# Link Decoder Function
+# Only Firebase URLs Extract karne wala function
 def decode_custom_url(url_text: str) -> str:
     parsed_url = urlparse(url_text)
     query_params = parse_qs(parsed_url.query)
@@ -29,44 +30,53 @@ def decode_custom_url(url_text: str) -> str:
         encoded_str = url_text.strip()
 
     try:
+        # Base64 padding fix
         missing_padding = len(encoded_str) % 4
         if missing_padding:
             encoded_str += '=' * (4 - missing_padding)
         
+        # Decode base64
         decoded_bytes = base64.b64decode(encoded_str)
-        decoded_str = decoded_bytes.decode('utf-8')
+        decoded_str = decoded_bytes.decode('utf-8', errors='ignore')
         
-        urls = decoded_str.split('|||')
-        return "\n".join([f"• {u}" for u in set(urls)])
+        # Regex se sirf Firebase URLs extract karna (.firebaseio.com aur .firebasedatabase.app dono)
+        firebase_pattern = r'https://[a-zA-Z0-9\.-]+?\.(?:firebaseio\.com|firebasedatabase\.app)'
+        firebase_links = re.findall(firebase_pattern, decoded_str)
+        
+        # Unique links preserve karna
+        unique_links = list(dict.fromkeys(firebase_links))
+        
+        if not unique_links:
+            return None
+            
+        return "\n".join([f"• {link}" for link in unique_links])
+        
     except Exception:
         return None
 
 # Telegram Handlers
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hii! Mujhe link bhejie, main decode kar doonga.")
+    await update.message.reply_text("Hii! Mujhe link ya Base64 text bhejo, main usme se sirf Firebase URLs nikal ke de doonga.")
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     decoded_result = decode_custom_url(text)
     
     if decoded_result:
-        reply_text = f"✅ **Decoded Result:**\n\n{decoded_result}"
+        reply_text = f"✅ **Decoded Firebase Links:**\n\n{decoded_result}"
     else:
-        reply_text = "❌ Yeh valid Base64 link nahi hai."
+        reply_text = "❌ Koi valid Firebase URL nahi mila."
         
-    await update.message.reply_text(reply_text, parse_mode="Markdown")
+    await update.message.reply_text(reply_text, disable_web_page_preview=True)
 
 def main():
-    # Render Environment Variables se Token uthayega
     token = os.environ.get("BOT_TOKEN")
     if not token:
         print("Error: BOT_TOKEN Environment Variable nahi mila!")
         return
 
-    # Background me Flask server start karna
     Thread(target=run_flask, daemon=True).start()
 
-    # Telegram Bot Start karna
     application = Application.builder().token(token).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
